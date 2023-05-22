@@ -1,1 +1,8 @@
 LIBRARY DPLAYX
+EXPORTS
+	DirectPlayCreate=DirectPlayCreate_Stub @1
+	DirectPlayEnumerateA=DirectPlayEnumerate_Stub @2
+	DirectPlayEnumerateW=DirectPlayEnumerate_Stub @3
+	DirectPlayLobbyCreateA=DirectPlayLobbyCreate_Stub @4
+	DirectPlayLobbyCreateW=DirectPlayLobbyCreate_Stub @5
+	DirectPlayEnumerate=DirectPlayEnumerate_Stub @9
