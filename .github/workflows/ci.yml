@@ -1,0 +1,39 @@
+name: CI
+on: [push, pull_request]
+
+env:
+    name: DirectPlay-Stub
+
+jobs:
+    build:
+        name: Build
+        runs-on: windows-2022
+        strategy:
+            matrix:
+                configuration: [Release, Shipping]
+
+        steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v3
+              with:
+                submodules: recursive
+            - name: Setup Premake5
+              uses: abel0b/setup-premake@v2.2
+              with:
+                version: 5.0.0-beta2
+            - name: Add MSBuild to PATH
+              uses: microsoft/setup-msbuild@v1.3
+            - name: Compile ${{ matrix.configuration }}
+              run: |
+                premake5 vs2022
+                msbuild build/${{ env.name }}.sln /t:rebuild /p:Configuration=${{ matrix.configuration }}
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                name: ${{ env.name }}-${{ matrix.configuration }}
+                if-no-files-found: error
+                path: |
+                  build/bin/**/*.asi
+                  build/bin/**/*.dll
+                  build/bin/**/*.exe
+                  build/bin/**/*.pdb
